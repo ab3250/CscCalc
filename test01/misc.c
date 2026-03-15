@@ -1,3 +1,4 @@
+
 #include <string.h>
 #include "chicken.h"
 #include <stdbool.h>
@@ -8,7 +9,6 @@
 #include <mpfr.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "misc.h"
 
 
 int get_switch_value_one_operand(char* func) {
@@ -22,7 +22,7 @@ int get_switch_value_one_operand(char* func) {
             if(strcmp(func_array[i],func)==0)
                 break;       
         }   
-   return i;
+   return (i);
 }
 
 int get_switch_value_two_operand(char* func) {
@@ -34,13 +34,13 @@ int get_switch_value_two_operand(char* func) {
         "power"        
     };
 
-int i, j=sizeof(func_array);
+    int i, j=sizeof(func_array);
     for (i = 0;i<j;++i)   
         {       
             if(strcmp(func_array[i],func)==0)
                 break;       
         }   
-   return i;
+   return (i);
 }
 
 int calc_two_operand(C_word func,double in1, double in2, char **out) {
@@ -87,12 +87,14 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
         }
       
         ret = mpfr_asprintf (out, "%.17Rg", result);
-        mpfr_clears(a,b,result, NULL);                    // mandatory cleanup
+        mpfr_clears(a,b,result, NULL);     
+              free(str);
+        str = NULL;               // mandatory cleanup
         return 0;
     }
 
 
-    int calc_one_operand(C_word func,double in1, char **out) {
+    int calc_one_operand(C_word func, double in1, char **out) {
         
     int ret;
 
@@ -121,5 +123,8 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
       
         ret = mpfr_asprintf (out, "%.17Rg", result);
         mpfr_clears(a,result, NULL);                    // mandatory cleanup
+        free(str);
+        str = NULL;
         return 0;
     }
+
