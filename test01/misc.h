@@ -13,4 +13,4 @@
 
 
 int calc_two_operand(C_word func,double in1, double in2, char **out); 
-int calc_one_operand(C_word func, double in1, char **out);
+//int calc_one_operand(C_word func, double in1, char **out);

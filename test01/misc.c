@@ -11,37 +11,37 @@
 #include <stdbool.h>
 
 
-int get_switch_value_one_operand(char* func) {
-    const char *func_array[] = {        
-        "square"
-    };
+// int get_switch_value_one_operand(char* func) {
+//     const char *func_array[] = {        
+//         "square"
+//     };
 
-    int i, j=sizeof(func_array);
-    for (i = 0;i<j;++i)   
-        {       
-            if(strcmp(func_array[i],func)==0)
-                break;       
-        }   
-   return (i);
-}
+//     int i, j=sizeof(func_array);
+//     for (i = 0;i<j;++i)   
+//         {       
+//             if(strcmp(func_array[i],func)==0)
+//                 break;       
+//         }   
+//    return (i);
+// }
 
-int get_switch_value_two_operand(char* func) {
-    const char *func_array[] = {
-        "add",
-        "subtract",
-        "multiply",
-        "divide",
-        "power"        
-    };
+// int get_switch_value_two_operand(char* func) {
+//     const char *func_array[] = {
+//         "add",
+//         "subtract",
+//         "multiply",
+//         "divide",
+//         "power"        
+//     };
 
-    int i, j=sizeof(func_array);
-    for (i = 0;i<j;++i)   
-        {       
-            if(strcmp(func_array[i],func)==0)
-                break;       
-        }   
-   return (i);
-}
+//     int i, j=sizeof(func_array);
+//     for (i = 0;i<j;++i)   
+//         {       
+//             if(strcmp(func_array[i],func)==0)
+//                 break;       
+//         }   
+//    return (i);
+// }
 
 int calc_two_operand(C_word func,double in1, double in2, char **out) {
         
@@ -49,8 +49,22 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
 
     char* str = C_c_string(C_symbol_name(func));
     
-
-    
+      const char *func_array[] = {
+        "add",
+        "subtract",
+        "multiply",
+        "divide",
+        "power"        
+    };
+   
+    int i=0;
+    int j=sizeof(func_array);
+    for (i = 0;i<j;++i)   
+        {       
+            if(strcmp(func_array[i],str)==0)
+                break;       
+        }   
+        printf("%s",func_array[i]);
 
         mpfr_t a,b,result;
         mpfr_init2(a, 200);               // 256-bit precision (~77 decimal digits)
@@ -58,7 +72,7 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
         mpfr_init2(result, 200); 
         mpfr_set_d (a, in1, MPFR_RNDN);
         mpfr_set_d (b, in2, MPFR_RNDN);     
-        switch (get_switch_value_two_operand(str)) {
+        switch (1) {
         case 0:
             mpfr_add (result, a, b, MPFR_RNDN); 
             break;
@@ -76,6 +90,7 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
             break; 
         case 5:
             mpfr_exp2 (result, a, MPFR_RNDN);
+            break; 
         case 6:
             //int mpfr_setsign (mpfr t rop, mpfr t op, int s, mpfr rnd t rnd);
             break; 
@@ -88,43 +103,42 @@ int calc_two_operand(C_word func,double in1, double in2, char **out) {
       
         ret = mpfr_asprintf (out, "%.17Rg", result);
         mpfr_clears(a,b,result, NULL);     
-              free(str);
-        str = NULL;               // mandatory cleanup
+                // mandatory cleanup
         return 0;
     }
 
 
-    int calc_one_operand(C_word func, double in1, char **out) {
+    // int calc_one_operand(C_word func, double in1, char **out) {
         
-    int ret;
+    // int ret;
 
-    char* str = C_c_string(C_symbol_name(func));
+    // char* str = C_c_string(C_symbol_name(func));
     
 
     
 
-        mpfr_t a,result;
-        mpfr_init2(a, 200);               // 256-bit precision (~77 decimal digits)        
-        mpfr_init2(result, 200); 
-        mpfr_set_d (a, in1, MPFR_RNDN);
+    //     mpfr_t a,result;
+    //     mpfr_init2(a, 200);               // 256-bit precision (~77 decimal digits)        
+    //     mpfr_init2(result, 200); 
+    //     mpfr_set_d (a, in1, MPFR_RNDN);
           
-        switch (get_switch_value_one_operand(str)) {
-        case 0:
-            mpfr_exp2 (result, a, MPFR_RNDN);
-        case 1:
-            //int mpfr_setsign (mpfr t rop, mpfr t op, int s, mpfr rnd t rnd);
-            break; 
-        case 2:
-            //int mpfr_sgn (mpfr t op);
-            break;
-        default:
-            // code to be executed if none of the cases match
-        }
+    //     switch (get_switch_value_one_operand(str)) {
+    //     case 0:
+    //         mpfr_exp2 (result, a, MPFR_RNDN);
+    //     case 1:
+    //         //int mpfr_setsign (mpfr t rop, mpfr t op, int s, mpfr rnd t rnd);
+    //         break; 
+    //     case 2:
+    //         //int mpfr_sgn (mpfr t op);
+    //         break;
+    //     default:
+    //         // code to be executed if none of the cases match
+    //     }
       
-        ret = mpfr_asprintf (out, "%.17Rg", result);
-        mpfr_clears(a,result, NULL);                    // mandatory cleanup
-        free(str);
-        str = NULL;
-        return 0;
-    }
+    //     ret = mpfr_asprintf (out, "%.17Rg", result);
+    //     mpfr_clears(a,result, NULL);                    // mandatory cleanup
+    //     free(str);
+    //     str = NULL;
+    //     return 0;
+    // }
 

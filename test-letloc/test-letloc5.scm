@@ -52,7 +52,7 @@ int calc_two_digits(int type,double in1, double in2, char **out) {
 }
 <#
  ;(gc)
-(import (srfi 209)(symbol-name-utils)(foreign))
+(import (chicken foreign))
 
 (define (get_fun func)
  ( enum-name->value function func))
