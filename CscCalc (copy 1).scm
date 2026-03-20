@@ -53,12 +53,16 @@
 (define calc
   (foreign-lambda* int ((scheme-object func)(double in1)(double in2) ((c-pointer c-string*) out ))
   "
+  //char* str = C_c_string(C_symbol_name(func));
+ // C_word *ptrs[] = {str};
+  //C_gc_protect (ptrs, 1);
 
-  //char* str=C_c_string(C_symbol_name(func));
-  char* sym=strdup(C_c_string(C_symbol_name(func))); 
-  int sw = get_switch_number(sym);
-  free(sym);
-  sym = NULL; 
+  char* str = C_c_string(func);
+  
+
+
+  //char* str = \"divide\";
+  int sw = get_switch_number(str);
  
   int ret;
   //char* str = C_c_string(C_symbol_name(func)); 
@@ -104,7 +108,7 @@
 
 (newline)
 (let-location ((out c-string*)) ; out will be a location that frees the memory when dereferenced
-  (let ((rv (calc 'divide 2 3 (location out))))
+  (let ((rv (calc 'add 2 3 (location out))))
     (if (eqv? rv 0)
         (display out) ; Access the string here.
         (error "profile error" rv))))
